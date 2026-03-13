@@ -33,17 +33,26 @@ function AppShell() {
 
   // WHY: Listen to the years collection to populate the year selector dynamically.
   // New years appear instantly when added to Firestore.
+  // WHY: Only update availableYears here — never override selectedYear directly.
+  // The onSnapshot fires multiple times (local cache + server confirmation) which
+  // races with explicit setSelectedYear calls from the YearSelector "+" button.
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'years'), (snapshot) => {
       const years = snapshot.docs.map((d) => d.id).sort((a, b) => b.localeCompare(a));
       if (years.length > 0) {
         setAvailableYears(years);
-        // WHY: If the currently selected year no longer exists, fall back to the most recent
-        setSelectedYear((prev) => (years.includes(prev) ? prev : years[0]));
       }
     });
     return () => unsubscribe();
   }, []);
+
+  // WHY: Separate effect to handle the edge case where the selected year
+  // is removed from Firestore — falls back to the most recent year.
+  useEffect(() => {
+    if (availableYears.length > 0 && !availableYears.includes(selectedYear)) {
+      setSelectedYear(availableYears[0]);
+    }
+  }, [availableYears, selectedYear]);
 
   if (authLoading) {
     return (
