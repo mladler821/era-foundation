@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+/* Brand colors extracted from the ERA Foundation logo */
+@theme {
+  --color-purple: #9663B0;
+  --color-purple-light: #EDE0F5;
+  --color-purple-dark: #6A3D84;
+  --color-gold: #C7B25F;
+  --color-gold-light: #F5EFD6;
+  --color-gold-dark: #8C7A35;
+  --color-warm-gray: #6B6570;
+  --color-warm-gray-lt: #F2F0F3;
+  --color-text-dark: #2A2030;
+  --color-card-border: #E0DCE5;
+}
+
+@layer base {
+  body {
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    color: var(--color-text-dark);
+    background-color: var(--color-warm-gray-lt);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+  }
+}
