@@ -13,7 +13,8 @@ app.use(express.static(distPath));
 
 // WHY: SPA — all routes that don't match a static file should serve index.html
 // so client-side routing works on refresh/direct navigation.
-app.get('*', (_req, res) => {
+// WHY: Express 5 removed unnamed wildcards — must use named param syntax {*path}
+app.get('/{*path}', (_req, res) => {
   res.sendFile(join(distPath, 'index.html'));
 });
 
